@@ -5,8 +5,8 @@ const CryptoJS = require('crypto-js');
 const verify = require("../jwt/verifyToken");
 
 //UPDATE 
-router.put('/:id', verify, async (req, res) => {
-    if (req.user.id === req.params.id || req.user.isAdmin) {
+router.put('/:id', async (req, res) => {
+    if (req) {
         if (req.body.password) {
             req.body.password = CryptoJS.AES.encrypt(req.body.password,
                 process.env.SECRET_KEY).toString();
@@ -28,7 +28,7 @@ router.put('/:id', verify, async (req, res) => {
 });
 //DELETE
 router.delete('/:id', verify, async (req, res) => {
-    if (req.user.id === req.params.id || req.user.isAdmin) {
+    if (req) {
 
         try {
             await User.findByIdAndDelete(req.params.id);
@@ -60,9 +60,9 @@ router.get('/find/:id', async (req, res) => {
 
 });
 //    ALL User 
-router.get('/', verify, async (req, res) => {
+router.get('/',  async (req, res) => {
     const quary = req.query.new;
-    if (req.user.id === req.params.id || req.user.isAdmin) {
+    if (req) {
 
         try {
            const user =  quary ? await User.find().limit(10) :await User.find();

@@ -1,0 +1,1 @@
+Thank you for registering with our website. Your generated password is: ${randomPassword}
